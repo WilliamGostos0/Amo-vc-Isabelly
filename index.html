@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Te Amo</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #001f2f;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      overflow: auto;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    h2 {
+      margin-top: 30px;
+      font-size: 24px;
+      color: #ff5e78;
+    }
+
+    .timer {
+      font-size: 18px;
+      margin-top: 10px;
+    }
+
+    hr {
+      margin: 30px auto;
+      width: 60%;
+      border: none;
+      border-top: 2px solid #fff;
+    }
+
+    .message {
+      font-size: 16px;
+      line-height: 1.6;
+      padding: 0 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+
+    .heart {
+      color: #ff5e78;
+    }
+
+    .start-button {
+      font-size: 24px;
+      background-color: transparent;
+      border: 2px solid #ff5e78;
+      color: #ff5e78;
+      padding: 10px 20px;
+      border-radius: 30px;
+      cursor: pointer;
+      margin-top: 100px;
+      transition: all 0.3s ease;
+    }
+
+    .start-button:hover {
+      background-color: #ff5e78;
+      color: white;
+    }
+
+    .start-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .hearts {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 999; /* AUMENTADO para ficar por cima de tudo */
+    }
+
+    .hearts span {
+      position: absolute;
+      color: #ff5e78;
+      font-size: 24px;
+      animation: fall 10s linear infinite;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-100px);
+        opacity: 1;
+      }
+      80% {
+        opacity: 1;
+      }
+      95% {
+        opacity: 0.5;
+      }
+      100% {
+        transform: translateY(100vh);
+        opacity: 0;
+      }
+    }
+
+    .carousel-container {
+      width: 100%;
+      max-width: 400px;
+      height: auto;
+      margin: 30px auto;
+      overflow: hidden;
+      border-radius: 20px;
+      position: relative;
+      z-index: 5;
+    }
+
+    .carousel-track {
+      display: flex;
+      transition: transform 1s ease-in-out;
+    }
+
+    .carousel-track img {
+      width: 100%;
+      height: auto;
+      flex-shrink: 0;
+      border-radius: 20px;
+    }
+
+    .music-player {
+      margin-top: 20px;
+      z-index: 1;
+      position: relative;
+    }
+
+    iframe {
+      border: none;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 400px;
+      height: 80px;
+    }
+
+    /* Presentes */
+    .present-button {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background-color: #ff5e78;
+      color: white;
+      font-size: 28px;
+      border: none;
+      cursor: pointer;
+      margin: 40px auto;
+      display: block;
+      transition: background-color 0.3s ease;
+    }
+
+    .present-button:hover {
+      background-color: #ff3e60;
+    }
+
+    .gift-section {
+      margin-top: 30px;
+    }
+
+    .gift-text {
+      font-size: 20px;
+      margin-bottom: 20px;
+      color: #ff5e78;
+    }
+
+    .gift-boxes {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .gift-box {
+      width: 80px;
+      height: 80px;
+      background-color: pink;
+      border: 2px solid white;
+      border-radius: 10px;
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+
+    .gift-box:hover {
+      transform: scale(1.1);
+    }
+
+    .gift-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-weight: bold;
+      color: #001f2f;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="start-screen" id="start-screen">
+    <button class="start-button" onclick="showMain()">❤️ Clique Aqui ❤️</button>
+  </div>
+
+  <div id="main-content" class="hidden">
+    <div class="hearts" id="hearts-container"></div>
+
+    <div class="music-player">
+      <iframe style="border-radius:12px"
+        src="https://open.spotify.com/embed/track/1DLKuppSYytOuxhtI6KBGu?utm_source=generator"
+        width="100%" height="80" frameBorder="0" allowfullscreen=""
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        loading="lazy">
+      </iframe>
+    </div>
+
+    <div class="carousel-container">
+      <div class="carousel-track" id="carousel-track">
+        <img src="images/foto1.png" alt="Foto 1">
+        <img src="images/foto2.png" alt="Foto 2">
+        <img src="images/foto3.png" alt="Foto 3">
+        <img src="images/foto4.png" alt="Foto 4">
+        <img src="images/foto5.png" alt="Foto 5">
+      </div>
+    </div>
+
+    <h2><span class="heart">❤️</span> Eu te amo há:</h2>
+    <div class="timer" id="timer"></div>
+    <hr>
+    <div class="message">
+      Isabelly, a cada dia que passa, meu coração se enche mais de carinho e admiração por você. Cada sorriso seu ilumina o meu mundo, e cada abraço me faz sentir que estou exatamente onde deveria estar. Você é a razão dos meus melhores pensamentos, e tudo ao seu lado se torna mais bonito e significativo. Eu te amo para sempre <span class="heart">💖</span>
+    </div>
+
+    <button class="present-button" onclick="showGifts()">🎁</button>
+
+    <div id="gift-section" class="gift-section hidden">
+      <div class="gift-text">Escolha um presente:</div>
+      <div class="gift-boxes">
+        <div class="gift-box" onclick="showGift(this)">
+          <div class="gift-content">Vale Beijo 💋</div>
+        </div>
+        <div class="gift-box" onclick="showGift(this)">
+          <div class="gift-content">Vale Açaí 🍓</div>
+        </div>
+        <div class="gift-box" onclick="showGift(this)">
+          <div class="gift-content">Vale Merenda 🍔</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function showMain() {
+      document.getElementById('start-screen').style.display = 'none';
+      document.getElementById('main-content').style.display = 'block';
+      createHearts();
+      startCarousel();
+    }
+
+    const startDate = new Date('2022-09-10T00:00:00');
+
+    function updateTimer() {
+      const now = new Date();
+      let years = now.getFullYear() - startDate.getFullYear();
+      let months = now.getMonth() - startDate.getMonth();
+      let days = now.getDate() - startDate.getDate();
+
+      if (days < 0) {
+        months--;
+        const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+        days += prevMonth.getDate();
+      }
+
+      if (months < 0) {
+        years--;
+        months += 12;
+      }
+
+      const lastFullDate = new Date(startDate);
+      lastFullDate.setFullYear(startDate.getFullYear() + years);
+      lastFullDate.setMonth(startDate.getMonth() + months);
+      lastFullDate.setDate(startDate.getDate() + days);
+
+      const diffMs = now - lastFullDate;
+      const seconds = Math.floor(diffMs / 1000) % 60;
+      const minutes = Math.floor(diffMs / 60000) % 60;
+      const hours = Math.floor(diffMs / 3600000);
+
+      document.getElementById('timer').innerText =
+        `${years} anos, ${months} meses, ${days} dias, ${hours} horas, ${minutes} minutos e ${seconds} segundos`;
+    }
+
+    setInterval(updateTimer, 1000);
+    updateTimer();
+
+    function createHearts() {
+      const container = document.getElementById('hearts-container');
+
+      function spawnHeart() {
+        const heart = document.createElement('span');
+        heart.innerHTML = '❤️';
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.animationDuration = (4.5 + Math.random() * 4.5) + 's';
+        heart.style.fontSize = (18 + Math.random() * 18) + 'px';
+        heart.style.animationName = 'fall';
+        container.appendChild(heart);
+
+        setTimeout(() => {
+          heart.remove();
+        }, 10000);
+      }
+
+      setInterval(() => {
+        spawnHeart();
+      }, Math.random() * 300 + 200);
+    }
+
+    function startCarousel() {
+      const track = document.getElementById('carousel-track');
+      const slides = track.children;
+      let index = 0;
+
+      setInterval(() => {
+        index = (index + 1) % slides.length;
+        track.style.transform = `translateX(-${index * 100}%)`;
+      }, 3000);
+    }
+
+    function showGifts() {
+      document.getElementById('gift-section').classList.remove('hidden');
+    }
+
+    function showGift(box) {
+      const allBoxes = document.querySelectorAll('.gift-content');
+      allBoxes.forEach(content => content.style.display = 'none');
+
+      const content = box.querySelector('.gift-content');
+      content.style.display = 'block';
+    }
+  </script>
+</body>
+</html>
